@@ -6,13 +6,88 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please select a topping"
+            android:textSize="24sp" />
+
+        <CheckBox
+            android:id="@+id/ckbCheese"
+            android:layout_width="116dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="279dp"
+            android:text="Cheese"
+            android:onClick="onCheckboxClicked"/>
+
+        <CheckBox
+            android:id="@+id/ckbCream"
+            android:layout_width="116dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="279dp"
+            android:text="Cream"
+            android:onClick="onCheckboxClicked"/>
+
+        <CheckBox
+            android:id="@+id/ckbTomato"
+            android:layout_width="116dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="279dp"
+            android:text="Tomato"
+            android:onClick="onCheckboxClicked"/>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Do you want home delivery"
+            android:textSize="24sp" />
+
+        <RadioGroup
+            android:id="@+id/rgAnswer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Yes" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Maybe" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/btnButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#919090"
+            android:text="Send"
+            android:textColor="#1E1A1A" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
