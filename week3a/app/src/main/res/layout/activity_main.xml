@@ -82,11 +82,13 @@
 
         <Button
             android:id="@+id/btnButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#919090"
+            android:drawableLeft="@drawable/shop"
             android:text="Send"
-            android:textColor="#1E1A1A" />
+            android:textColor="#1E1A1A"
+            tools:layout_editor_absoluteY="216dp" />
 
     </LinearLayout>
 
