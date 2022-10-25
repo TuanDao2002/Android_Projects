@@ -1,12 +1,15 @@
 package rmit.ad.week4;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,6 +31,26 @@ public class MainActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list);
         new GetStudent().execute();
+
+        Button button = findViewById(R.id.btnButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddStudent.class);
+                startActivityForResult(intent, 100);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                String response = (String) data.getExtras().get("response");
+                Toast.makeText(MainActivity.this, response, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class GetStudent extends AsyncTask<Void, Void, Void> {
