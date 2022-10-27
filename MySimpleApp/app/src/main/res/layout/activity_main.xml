@@ -53,16 +53,17 @@
             android:id="@+id/textView"
             android:layout_width="187dp"
             android:layout_height="66dp"
+            android:hint="0"
             android:text="TextView" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTextAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:minHeight="48dp"
-            android:text="Name" />
+            android:text="0" />
 
         <Button
             android:id="@+id/button2"
@@ -102,7 +103,7 @@
                 android:layout_height="50dp"
                 android:ems="15"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="name" />
         </TableRow>
 
         <TableRow
@@ -121,9 +122,8 @@
                 android:layout_height="50dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:hint="name" />
         </TableRow>
 
     </TableLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

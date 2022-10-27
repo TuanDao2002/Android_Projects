@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,26 @@ public class MainActivity extends AppCompatActivity {
                 num++;
 
                 textView.setText(num + "");
+            }
+        });
+
+        Button button2 = findViewById(R.id.button2);
+        button2.setText("guess age");
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText ageText = (EditText) findViewById(R.id.editTextAge);
+                int age = Integer.parseInt(ageText.getText().toString());
+                if (age < 18) {
+                    Toast.makeText(MainActivity.this, "Not old enough to get married", Toast.LENGTH_SHORT).show();
+                } else {
+                    int rand = (int)(Math.random() * 50);
+                    if (rand % 5 == 3) {
+                        Toast.makeText(MainActivity.this, "Can get married now: " + rand, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Cannot marry yet: " + rand, Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
