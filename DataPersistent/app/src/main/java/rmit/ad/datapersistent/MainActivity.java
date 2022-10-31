@@ -3,12 +3,14 @@ package rmit.ad.datapersistent;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -32,15 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setVisible(R.id.addLayout, false);
+        setVisible(R.id.updateLayout, false);
         showCurrencyList();
-
-        Button btnAdd = findViewById(R.id.button);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSubmitCurrency(view);
-            }
-        });
     }
 
     private void setVisible(int id, boolean isVisible) {
@@ -58,22 +53,35 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = dbManager.fetch();
         if (cursor.getCount() == 0) {
             setVisible(R.id.noRecordText, true);
-        } else {
-            ListView listView = (ListView) findViewById(R.id.list);
-            listView.setVisibility(View.VISIBLE);
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.activity_view_record, cursor, from, to, 0);
-            listView.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("Are you sure you want to delete?")
-                            .setPositiveButton("Delete", null).create().show();
-                }
-            });
         }
+
+        ListView listView = (ListView) findViewById(R.id.list);
+        listView.setVisibility(View.VISIBLE);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.activity_view_record, cursor, from, to, 0);
+        listView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Are you sure you want to delete?")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dbManager.delete(id);
+                                showCurrencyList();
+                            }
+                        }).create().show();
+            }
+        });
+    }
+
+    public void onAddClick(View view) {
+        LinearLayout addLayout = findViewById(R.id.addLayout);
+        addLayout.setVisibility(View.VISIBLE);
+        setVisible(R.id.noRecordText, false);
+        setVisible(R.id.list, false);
     }
 
     public void onSubmitCurrency(View view) {
