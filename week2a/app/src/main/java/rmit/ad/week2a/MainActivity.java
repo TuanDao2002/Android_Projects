@@ -68,8 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
                 intent.putExtra("number", Integer.toString(no));
 
-                startActivity(intent);
+                startActivityForResult(intent, 100);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100) {
+            if (resultCode == RESULT_OK) {
+                String res = "";
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    res = (String) bundle.get("response_message");
+                }
+
+                Toast.makeText(MainActivity.this, res, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

@@ -17,12 +17,12 @@ public class StudentActivity extends AppCompatActivity {
 
         Button btnQuit = findViewById(R.id.btnQuit);
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
+        Intent intent1 = getIntent();
+        Bundle bundle = intent1.getExtras();
         String number = bundle.getString("number");
 
         TextView textView = findViewById(R.id.txtMessage);
-        String message = "";
+        String message;
         if (Integer.parseInt(number) == Integer.MIN_VALUE) {
             message = "Your id is not a number";
         } else if (Integer.parseInt(number) < 0) {
@@ -35,6 +35,9 @@ public class StudentActivity extends AppCompatActivity {
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent2 = new Intent(StudentActivity.this, MainActivity.class);
+                intent2.putExtra("response_message", "Thanks");
+                setResult(RESULT_OK, intent2);
                 finish();
             }
         });
