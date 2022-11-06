@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -28,10 +30,26 @@ public class SearchActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        keywordText = findViewById(R.id.keywordInput);
+        keywordText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                keyword = keywordText.getText().toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         Button findBooksBtn = findViewById(R.id.findBooks);
         findBooksBtn.setOnClickListener(view -> {
-            keywordText = findViewById(R.id.keywordInput);
-            String keyword = keywordText.getText().toString();
             Intent intent = new Intent(SearchActivity.this, BookListActivity.class);
             intent.putExtra("keyword", keyword);
             startActivityForResult(intent, 200);
