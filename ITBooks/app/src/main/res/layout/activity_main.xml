@@ -11,7 +11,6 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="40sp"
@@ -28,6 +27,7 @@
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:layout_margin="25dp"
         android:text="Search"/>
 
     <Button
