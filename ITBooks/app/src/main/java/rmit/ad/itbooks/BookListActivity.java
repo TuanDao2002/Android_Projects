@@ -68,8 +68,9 @@ public class BookListActivity extends AppCompatActivity {
                     String isbn13 = object.getString("isbn13");
                     String title = object.getString("title");
                     String subtitle = object.getString("subtitle");
+                    String imageURL = object.getString("image");
 
-                    Book newBook = new Book(isbn13, title, subtitle);
+                    Book newBook = new Book(isbn13, title, subtitle, imageURL);
                     books.add(newBook);
                 }
 
