@@ -2,9 +2,11 @@ package rmit.ad.itbooks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,6 +26,8 @@ public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
     private ListView listView;
+    private Boolean isEmpty = false;
+    private Boolean isError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +64,17 @@ public class BookListActivity extends AppCompatActivity {
 
             try {
                 root = new JSONObject(json);
-                JSONArray array = root.getJSONArray("books");
 
+                String error = root.get("error").toString();
+                if (!error.equals("0")) {
+                    Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
+                    intent.putExtra("error", error);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                    return;
+                }
+
+                JSONArray array = root.getJSONArray("books");
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
 
@@ -77,6 +90,10 @@ public class BookListActivity extends AppCompatActivity {
                 BookAdapter bookAdapter = new BookAdapter(books, BookListActivity.this);
                 listView.setAdapter(bookAdapter);
             } catch (JSONException e) {
+                Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
+                intent.putExtra("error", "Bad request error");
+                setResult(RESULT_OK, intent);
+                finish();
                 e.printStackTrace();
             }
         }

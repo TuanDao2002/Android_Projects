@@ -3,6 +3,7 @@ package rmit.ad.itbooks;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.InputStream;
 import java.util.List;
@@ -36,56 +45,35 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         Book book = bookList.get(position);
         if (book != null) {
-//            TextView textISBN13 = (TextView) convertView.findViewById(R.id.isbn13);
-//            textISBN13.setText(book.getIsbn13() + "");
-
             TextView textTitle = (TextView) convertView.findViewById(R.id.title);
             textTitle.setText(book.getTitle() + "");
 
             TextView textSubtitle = (TextView) convertView.findViewById(R.id.subtitle);
             textSubtitle.setText(book.getSubtitle() + "");
 
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
+            ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.loading);
 
-            new DownloadImageTask((ImageView) convertView.findViewById(R.id.imageView), convertView)
-                    .execute(book.getImageURL());
+            Glide.with(convertView)
+                    .load(book.getImageURL())
+                    .centerCrop()
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .into(imageView);
         }
 
         return convertView;
-    }
-
-    private static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        View convertView;
-        private ProgressBar progressBar;
-
-        public DownloadImageTask(ImageView bmImage, View convertView) {
-            this.bmImage = bmImage;
-            this.convertView = convertView;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            progressBar = (ProgressBar) convertView.findViewById(R.id.loading);
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-            progressBar.setVisibility(View.VISIBLE);
-        }
     }
 }
 

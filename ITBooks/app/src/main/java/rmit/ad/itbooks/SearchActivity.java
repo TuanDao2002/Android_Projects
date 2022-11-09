@@ -3,6 +3,7 @@ package rmit.ad.itbooks;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -62,6 +63,17 @@ public class SearchActivity extends AppCompatActivity {
         if (requestCode == 200) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(SearchActivity.this,"back from book list", Toast.LENGTH_SHORT).show();
+                if (data != null && data.getExtras() != null && !data.getExtras().getString("error").isEmpty()) {
+                    Toast.makeText(SearchActivity.this,data.getExtras().getString("error"), Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("Error")
+                            .setMessage(data.getExtras().getString("error"))
+                            .setPositiveButton("OK", (dialog, i) -> {
+                                dialog.dismiss();
+
+                            });
+                    builder.create().show();
+                }
             }
         }
     }
