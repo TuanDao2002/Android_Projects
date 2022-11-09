@@ -16,10 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SearchActivity extends AppCompatActivity {
 
     EditText keywordText;
-    String keyword;
+    String keyword = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,28 @@ public class SearchActivity extends AppCompatActivity {
 
         Button findBooksBtn = findViewById(R.id.findBooks);
         findBooksBtn.setOnClickListener(view -> {
+            keyword = keyword.trim();
+            Pattern specialChars = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+            Matcher matcher = specialChars.matcher(keyword);
+
+            String title = "", message = "";
+            if (keyword.isEmpty()) {
+                title = "Empty keyword";
+                message = "Keyword must not be empty";
+            } else if (matcher.find()) {
+                title = "Invalid keyword";
+                message = "The keyword must not have strange characters beside alphabet and numeric characters";
+            }
+
+            if (!title.isEmpty()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle(title)
+                        .setMessage(message)
+                        .setPositiveButton("OK", (dialog, i) -> dialog.dismiss());
+                builder.create().show();
+                return;
+            }
+
             Intent intent = new Intent(SearchActivity.this, BookListActivity.class);
             intent.putExtra("keyword", keyword);
             startActivityForResult(intent, 200);
@@ -63,15 +88,25 @@ public class SearchActivity extends AppCompatActivity {
         if (requestCode == 200) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(SearchActivity.this,"back from book list", Toast.LENGTH_SHORT).show();
-                if (data != null && data.getExtras() != null && !data.getExtras().getString("error").isEmpty()) {
-                    Toast.makeText(SearchActivity.this,data.getExtras().getString("error"), Toast.LENGTH_SHORT).show();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Error")
-                            .setMessage(data.getExtras().getString("error"))
-                            .setPositiveButton("OK", (dialog, i) -> {
-                                dialog.dismiss();
+                String res;
+                if (data == null) return;
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    res = (String) bundle.get("error");
 
-                            });
+                    String message;
+                    if (res.equals("Connection error")) {
+                        message = "Check your Internet connection and try again";
+                    } else if (res.equals("Bad request error")) {
+                        message = "There is error in request. Please try again";
+                    } else {
+                        message = "Please fix the keyword or try again";
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle(res)
+                            .setMessage(message)
+                            .setPositiveButton("OK", (dialog, i) -> dialog.dismiss());
                     builder.create().show();
                 }
             }

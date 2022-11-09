@@ -7,21 +7,21 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpHandler {
-    public static String getJson(String urlStr) {
+    public static String getJson(String urlStr) throws Exception {
         HttpURLConnection httpURLConnection;
         StringBuilder stringBuilder = new StringBuilder();
 
-        try {
-            URL url = new URL(urlStr);
-            httpURLConnection = (HttpURLConnection) url.openConnection();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+        URL url = new URL(urlStr);
+        httpURLConnection = (HttpURLConnection) url.openConnection();
 
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        httpURLConnection.setConnectTimeout(5000);
+        httpURLConnection.setReadTimeout(5000);
+
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuilder.append(line);
         }
 
         return stringBuilder.toString();

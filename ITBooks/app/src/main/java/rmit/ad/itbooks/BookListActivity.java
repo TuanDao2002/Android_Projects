@@ -2,18 +2,14 @@ package rmit.ad.itbooks;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,8 +22,6 @@ public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
     private ListView listView;
-    private Boolean isEmpty = false;
-    private Boolean isError = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +37,13 @@ public class BookListActivity extends AppCompatActivity {
         }
     }
 
+    private void responseToSearchActivity(String errorMessage) {
+        Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
+        intent.putExtra("error", errorMessage);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     private class GetBooks extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -51,7 +52,12 @@ public class BookListActivity extends AppCompatActivity {
             keywordValue = (String) intent.getExtras().get("keyword");
 
             String url = String.format("https://api.itbook.store/1.0/search/%s", keywordValue);
-            json = HttpHandler.getJson(url);
+            try {
+                json = HttpHandler.getJson(url);
+            } catch (Exception e) {
+                responseToSearchActivity("Connection error");
+                e.printStackTrace();
+            }
             return null;
         }
 
@@ -67,10 +73,7 @@ public class BookListActivity extends AppCompatActivity {
 
                 String error = root.get("error").toString();
                 if (!error.equals("0")) {
-                    Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
-                    intent.putExtra("error", error);
-                    setResult(RESULT_OK, intent);
-                    finish();
+                    responseToSearchActivity(error);
                     return;
                 }
 
@@ -90,10 +93,7 @@ public class BookListActivity extends AppCompatActivity {
                 BookAdapter bookAdapter = new BookAdapter(books, BookListActivity.this);
                 listView.setAdapter(bookAdapter);
             } catch (JSONException e) {
-                Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
-                intent.putExtra("error", "Bad request error");
-                setResult(RESULT_OK, intent);
-                finish();
+                responseToSearchActivity("Bad request error");
                 e.printStackTrace();
             }
         }
