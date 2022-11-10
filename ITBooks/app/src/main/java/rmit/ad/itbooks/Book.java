@@ -5,12 +5,14 @@ public class Book {
     private String title;
     private String subtitle;
     private String imageURL;
+    private String bookURL;
     private String price;
 
-    public Book(String isbn13, String title, String subtitle, String imageURL, String price) {
+    public Book(String isbn13, String title, String subtitle, String bookURL, String imageURL, String price) {
         this.isbn13 = isbn13;
         this.title = title;
         this.subtitle = subtitle;
+        this.bookURL = bookURL;
         this.imageURL = imageURL;
         this.price = price;
     }
@@ -21,6 +23,10 @@ public class Book {
 
     public String getSubtitle() {
         return subtitle;
+    }
+
+    public String getBookURL() {
+        return bookURL;
     }
 
     public String getImageURL() {

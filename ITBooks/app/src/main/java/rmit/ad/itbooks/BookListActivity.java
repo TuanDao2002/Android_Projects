@@ -5,11 +5,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -103,18 +105,26 @@ public class BookListActivity extends AppCompatActivity {
                     String title = object.getString("title");
                     String subtitle = object.getString("subtitle");
                     String imageURL = object.getString("image");
+                    String bookURL = object.getString("url");
                     String price = object.getString("price");
 
                     if (price.equals("$0.00")) {
                         price = "FREE";
                     }
 
-                    Book newBook = new Book(isbn13, title, subtitle, imageURL, price);
+                    Book newBook = new Book(isbn13, title, subtitle, bookURL, imageURL, price);
                     books.add(newBook);
                 }
 
                 BookAdapter bookAdapter = new BookAdapter(books, BookListActivity.this);
                 listView.setAdapter(bookAdapter);
+                listView.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Book book = (Book) listView.getItemAtPosition(i);
+                    Uri uri = Uri.parse(book.getBookURL());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                });
+
                 waitingProgressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
                 responseToSearchActivity("Bad request error");
