@@ -9,7 +9,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +31,7 @@ public class BookListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        listView = (ListView) findViewById(R.id.bookList);
+        listView = findViewById(R.id.bookList);
         new GetBooks().execute();
 
         ActionBar actionBar = getSupportActionBar();
@@ -45,13 +48,18 @@ public class BookListActivity extends AppCompatActivity {
     }
 
     private class GetBooks extends AsyncTask<Void, Void, Void> {
-
         @Override
         protected Void doInBackground(Void... voids) {
             Intent intent = getIntent();
-            keywordValue = (String) intent.getExtras().get("keyword");
 
-            String url = String.format("https://api.itbook.store/1.0/search/%s", keywordValue);
+            String url;
+            if (intent.getExtras().getBoolean("new")) {
+                url = "https://api.itbook.store/1.0/new";
+            } else {
+                keywordValue = (String) intent.getExtras().get("keyword");
+                url = String.format("https://api.itbook.store/1.0/search/%s", keywordValue);
+            }
+
             try {
                 json = HttpHandler.getJson(url);
             } catch (Exception e) {
@@ -69,6 +77,9 @@ public class BookListActivity extends AppCompatActivity {
             JSONObject root;
 
             try {
+                ProgressBar waitingProgressBar = findViewById(R.id.waitingForResults);
+                TextView noBookText = findViewById(R.id.noBookText);
+
                 root = new JSONObject(json);
 
                 String error = root.get("error").toString();
@@ -78,6 +89,13 @@ public class BookListActivity extends AppCompatActivity {
                 }
 
                 JSONArray array = root.getJSONArray("books");
+
+                if (array.length() == 0) {
+                    waitingProgressBar.setVisibility(View.GONE);
+                    noBookText.setVisibility(View.VISIBLE);
+                    return;
+                }
+
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
 
@@ -85,13 +103,19 @@ public class BookListActivity extends AppCompatActivity {
                     String title = object.getString("title");
                     String subtitle = object.getString("subtitle");
                     String imageURL = object.getString("image");
+                    String price = object.getString("price");
 
-                    Book newBook = new Book(isbn13, title, subtitle, imageURL);
+                    if (price.equals("$0.00")) {
+                        price = "FREE";
+                    }
+
+                    Book newBook = new Book(isbn13, title, subtitle, imageURL, price);
                     books.add(newBook);
                 }
 
                 BookAdapter bookAdapter = new BookAdapter(books, BookListActivity.this);
                 listView.setAdapter(bookAdapter);
+                waitingProgressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
                 responseToSearchActivity("Bad request error");
                 e.printStackTrace();

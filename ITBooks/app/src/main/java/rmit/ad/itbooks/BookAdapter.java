@@ -51,6 +51,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
             TextView textSubtitle = (TextView) convertView.findViewById(R.id.subtitle);
             textSubtitle.setText(book.getSubtitle() + "");
 
+            TextView textPrice = (TextView) convertView.findViewById(R.id.price);
+            textPrice.setText(book.getPrice() + "");
+
             ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
             ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.loading);
 

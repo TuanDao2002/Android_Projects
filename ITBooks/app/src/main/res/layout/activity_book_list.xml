@@ -9,6 +9,14 @@
     android:background="@color/blue"
     tools:context=".BookListActivity">
 
+    <ProgressBar
+        android:id="@+id/waitingForResults"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"/>
+
     <ListView
         android:id="@+id/bookList"
         android:layout_width="match_parent"
@@ -23,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="No books match the keyword"
+        android:text="There is not result matched"
         android:textColor="@color/yellow"
         android:textSize="30sp"
         android:textStyle="bold"

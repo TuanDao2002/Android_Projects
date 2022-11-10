@@ -20,6 +20,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivityForResult(intent, 100);
         });
+
+        Button viewNewBook = findViewById(R.id.newBook);
+        viewNewBook.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+            intent.putExtra("new", true);
+            startActivityForResult(intent, 300);
+        });
     }
 
     @Override
@@ -28,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this,"back from search", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == 300) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(MainActivity.this,"back from new", Toast.LENGTH_SHORT).show();
             }
         }
     }
