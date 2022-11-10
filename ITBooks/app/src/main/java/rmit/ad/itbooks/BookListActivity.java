@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
     private ListView listView;
+    private Boolean viewNewBooks = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class BookListActivity extends AppCompatActivity {
             String url;
             if (intent.getExtras().getBoolean("new")) {
                 url = "https://api.itbook.store/1.0/new";
+                viewNewBooks = true;
             } else {
                 keywordValue = (String) intent.getExtras().get("keyword");
                 url = String.format("https://api.itbook.store/1.0/search/%s", keywordValue);
@@ -136,7 +137,13 @@ public class BookListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
+            Intent intent;
+            if (viewNewBooks) {
+                intent = new Intent(BookListActivity.this, MainActivity.class);
+            } else {
+                intent = new Intent(BookListActivity.this, SearchActivity.class);
+            }
+
             setResult(RESULT_OK, intent);
             finish();
             return true;
