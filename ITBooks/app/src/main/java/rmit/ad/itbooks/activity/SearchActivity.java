@@ -1,4 +1,4 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import rmit.ad.itbooks.R;
 
 public class SearchActivity extends AppCompatActivity {
 

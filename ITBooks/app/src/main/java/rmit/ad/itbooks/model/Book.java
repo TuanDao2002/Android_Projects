@@ -1,4 +1,4 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.model;
 
 public class Book {
     private String isbn13;

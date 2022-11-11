@@ -1,8 +1,9 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -20,14 +21,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import rmit.ad.itbooks.model.Book;
+import rmit.ad.itbooks.adapter.BookAdapter;
+import rmit.ad.itbooks.http.HttpHandler;
+import rmit.ad.itbooks.R;
 
 public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
     private ListView listView;
     private Boolean viewNewBooks = false;
-    List<Book> books = new ArrayList<>();
+    List<Book> books;
+    List<Book> sortedBooks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +50,17 @@ public class BookListActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
+        SwitchCompat switchCompat = findViewById(R.id.switchSort);
+        switchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
+            BookAdapter newBookAdapter;
+            if (switchCompat.isChecked()) {
+                newBookAdapter = new BookAdapter(sortedBooks, this);
+                listView.setAdapter(newBookAdapter);
+            } else {
+                newBookAdapter = new BookAdapter(books, this);
+                listView.setAdapter(newBookAdapter);
+            }
+        });
     }
 
     private void responseToSearchActivity(String errorMessage) {
@@ -101,6 +119,7 @@ public class BookListActivity extends AppCompatActivity {
                     return;
                 }
 
+                books = new ArrayList<>();
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject object = array.getJSONObject(i);
 
@@ -110,10 +129,6 @@ public class BookListActivity extends AppCompatActivity {
                     String imageURL = object.getString("image");
                     String bookURL = object.getString("url");
                     String price = object.getString("price");
-
-                    if (price.equals("$0.00")) {
-                        price = "FREE";
-                    }
 
                     Book newBook = new Book(isbn13, title, subtitle, bookURL, imageURL, price);
                     books.add(newBook);
@@ -129,6 +144,13 @@ public class BookListActivity extends AppCompatActivity {
                 });
 
                 waitingProgressBar.setVisibility(View.GONE);
+
+                sortedBooks = new ArrayList<>(books);
+                Collections.sort(sortedBooks, (book1, book2) -> {
+                    double price1 = Double.parseDouble(book1.getPrice().substring(1));
+                    double price2 = Double.parseDouble(book2.getPrice().substring(1));
+                    return (int) ((price1 - price2) * 100);
+                });
             } catch (JSONException e) {
                 responseToSearchActivity("Bad request error");
                 e.printStackTrace();

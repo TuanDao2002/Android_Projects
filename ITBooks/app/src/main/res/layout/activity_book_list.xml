@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/blue"
-    tools:context=".BookListActivity">
+    android:background="@color/red"
+    tools:context=".activity.BookListActivity">
 
     <ProgressBar
         android:id="@+id/waitingForResults"
@@ -38,6 +38,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="@color/white"
             android:gravity="end"
             android:orientation="horizontal">
 

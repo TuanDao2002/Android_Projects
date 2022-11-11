@@ -7,8 +7,8 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="10dp"
-    android:background="@color/blue"
-    tools:context=".SearchActivity">
+    android:background="@color/red"
+    tools:context=".activity.SearchActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -35,11 +35,7 @@
 
     <Button
         android:id="@+id/findBooks"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:backgroundTint="@color/yellow"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="20sp"
+        style="@style/Button"
+        android:stateListAnimator="@animator/button_shadow"
         android:text="find books"/>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.http;
 
 import java.io.BufferedReader;
 import java.io.IOException;

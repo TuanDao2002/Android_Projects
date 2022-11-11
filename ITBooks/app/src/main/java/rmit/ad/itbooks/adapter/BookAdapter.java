@@ -1,11 +1,7 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +18,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.io.InputStream;
 import java.util.List;
+
+import rmit.ad.itbooks.R;
+import rmit.ad.itbooks.model.Book;
 
 public class BookAdapter extends ArrayAdapter<Book> {
     private List<Book> bookList;
@@ -52,7 +50,11 @@ public class BookAdapter extends ArrayAdapter<Book> {
             textSubtitle.setText(book.getSubtitle() + "");
 
             TextView textPrice = (TextView) convertView.findViewById(R.id.price);
-            textPrice.setText(book.getPrice() + "");
+            if (book.getPrice().equals("$0.00")) {
+                textPrice.setText("FREE");
+            } else {
+                textPrice.setText(book.getPrice() + "");
+            }
 
             ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
             ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.loading);

@@ -1,4 +1,4 @@
-package rmit.ad.itbooks;
+package rmit.ad.itbooks.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
+
+import rmit.ad.itbooks.R;
 
 public class MainActivity extends AppCompatActivity {
 
