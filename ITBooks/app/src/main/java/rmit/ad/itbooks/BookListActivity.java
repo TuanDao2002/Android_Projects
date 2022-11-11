@@ -27,6 +27,7 @@ public class BookListActivity extends AppCompatActivity {
     private String json = "";
     private ListView listView;
     private Boolean viewNewBooks = false;
+    List<Book> books = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class BookListActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
     }
 
     private void responseToSearchActivity(String errorMessage) {
@@ -76,7 +79,6 @@ public class BookListActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            List<Book> books = new ArrayList<>();
             JSONObject root;
 
             try {
