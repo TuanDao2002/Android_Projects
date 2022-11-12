@@ -29,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("new", true);
             startActivityForResult(intent, 300);
         });
+
+        Button viewFavoriteBook = findViewById(R.id.favoriteBook);
+        viewFavoriteBook.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+            intent.putExtra("favorite", true);
+            startActivityForResult(intent, 400);
+        });
     }
 
     @Override
@@ -43,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this,"back from new", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (requestCode == 400) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(MainActivity.this,"back from favorite", Toast.LENGTH_SHORT).show();
             }
         }
     }

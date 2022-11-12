@@ -17,6 +17,10 @@ public class Book {
         this.price = price;
     }
 
+    public String getIsbn13() {
+        return isbn13;
+    }
+
     public String getTitle() {
         return title;
     }

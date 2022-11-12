@@ -37,5 +37,5 @@
         android:id="@+id/findBooks"
         style="@style/Button"
         android:stateListAnimator="@animator/button_shadow"
-        android:text="find books"/>
+        android:text="Find books"/>
 </LinearLayout>

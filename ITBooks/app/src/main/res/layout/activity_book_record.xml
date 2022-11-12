@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -74,13 +74,13 @@
                 />
 
             <Button
+                android:id="@+id/favoriteFeatureBtn"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:gravity="bottom|center"
                 style="@style/Button"
                 android:stateListAnimator="@animator/button_shadow"
-                android:focusable="false"
-                android:text="+ Add favorite"/>
+                android:focusable="false" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
