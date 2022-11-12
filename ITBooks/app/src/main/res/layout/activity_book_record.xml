@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="175dp"
     android:padding="5dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:baselineAligned="false">
 
     <RelativeLayout
         android:layout_width="0dip"
@@ -71,6 +72,15 @@
                 android:textColor="@color/white"
                 android:textStyle="normal"
                 />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="bottom|center"
+                style="@style/Button"
+                android:stateListAnimator="@animator/button_shadow"
+                android:focusable="false"
+                android:text="+ Add favorite"/>
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

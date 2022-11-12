@@ -24,7 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="There is not result matched"
+        android:text="There is no result matched"
         android:textColor="@color/yellow"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -36,16 +36,20 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/switchSortPanel"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/white"
+            android:background="@color/yellow"
             android:gravity="end"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="invisible">
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchSort"
-                android:text="sort by price"
-                android:textSize="25sp"
+                app:thumbTint="@drawable/switch_thumb"
+                app:trackTint="@drawable/switch_track"
+                android:text="SORT BY PRICE"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>
@@ -55,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="1dp"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:scrollbars="none"/>
     </LinearLayout>
 </RelativeLayout>

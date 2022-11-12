@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
     private ListView listView;
+    private SwitchCompat switchCompat;
+    private LinearLayout switchCompatPanel;
     private Boolean viewNewBooks = false;
     List<Book> books;
     List<Book> sortedBooks;
@@ -50,7 +53,8 @@ public class BookListActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        SwitchCompat switchCompat = findViewById(R.id.switchSort);
+        switchCompatPanel = (LinearLayout) findViewById(R.id.switchSortPanel);
+        switchCompat = findViewById(R.id.switchSort);
         switchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             BookAdapter newBookAdapter;
             if (switchCompat.isChecked()) {
@@ -115,6 +119,7 @@ public class BookListActivity extends AppCompatActivity {
 
                 if (array.length() == 0) {
                     waitingProgressBar.setVisibility(View.GONE);
+                    switchCompatPanel.setVisibility(View.GONE);
                     noBookText.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -144,6 +149,7 @@ public class BookListActivity extends AppCompatActivity {
                 });
 
                 waitingProgressBar.setVisibility(View.GONE);
+                switchCompatPanel.setVisibility(View.VISIBLE);
 
                 sortedBooks = new ArrayList<>(books);
                 Collections.sort(sortedBooks, (book1, book2) -> {
