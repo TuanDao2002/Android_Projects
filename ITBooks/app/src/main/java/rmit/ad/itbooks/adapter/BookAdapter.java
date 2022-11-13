@@ -20,8 +20,8 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import rmit.ad.itbooks.R;
 import rmit.ad.itbooks.db.DBManager;
@@ -81,33 +81,27 @@ public class BookAdapter extends ArrayAdapter<Book> {
             ProgressBar progressBar = convertView.findViewById(R.id.loading);
 
             Button favoriteFeatureBtn = convertView.findViewById(R.id.favoriteFeatureBtn);
+            boolean alreadyExistInFavorite = false;
             if (viewFavoriteBooks) {
                 favoriteFeatureBtn.setText("- Remove favorite book");
             } else {
                 DBManager dbManager = new DBManager(context);
-                boolean dup = false;
-
-//                for (Book b : bookList) {
-//                    if (dbManager.checkFavoriteExist(b.getIsbn13())) {
-//                        View view = super.getView(position, convertView, parent);
-//                        Button favoriteFeatureButton = view.findViewById(R.id.favoriteFeatureBtn);
-//                        favoriteFeatureButton.setEnabled(false);
-//                        favoriteFeatureButton.setText("Already in favorite");
-//                        dup = true;
-//                        break;
-//                    }
-//                }
-
-                if (!dup) favoriteFeatureBtn.setText(" + Add favorite book");
+                if (dbManager.checkFavoriteExist(book.getIsbn13())) {
+                    favoriteFeatureBtn.setText("Already favorite".toUpperCase(Locale.ROOT));
+                    alreadyExistInFavorite = true;
+                } else {
+                    favoriteFeatureBtn.setText(" + Add favorite book");
+                }
             }
 
+            boolean canInsertToFavorite = !alreadyExistInFavorite;
             favoriteFeatureBtn.setOnClickListener(view -> {
                 DBManager dbManager = new DBManager(context);
 
                 if (viewFavoriteBooks) {
                     dbManager.deleteFavoriteBook(book.getIsbn13());
                     bookList.remove(book);
-                } else {
+                } else if (canInsertToFavorite) {
                     dbManager.insertFavoriteBook(book);
                 }
 

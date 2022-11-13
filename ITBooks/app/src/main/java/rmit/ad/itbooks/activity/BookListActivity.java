@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,11 +13,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import rmit.ad.itbooks.db.DBManager;
 import rmit.ad.itbooks.model.Book;
@@ -41,6 +43,7 @@ public class BookListActivity extends AppCompatActivity {
     private TextView noBookText;
     private Boolean viewNewBooks = false;
     private Boolean viewFavoriteBooks = false;
+    private DBManager dbManager;
     List<Book> books;
     List<Book> sortedBooks = new ArrayList<>();
 
@@ -110,7 +113,7 @@ public class BookListActivity extends AppCompatActivity {
                 viewNewBooks = true;
             } else if (intent.getExtras().getBoolean("favorite")) {
                 viewFavoriteBooks = true;
-                DBManager dbManager = new DBManager(BookListActivity.this);
+                dbManager = new DBManager(BookListActivity.this);
                 books = dbManager.fetchFavoriteBooks();
                 return null;
             } else {
@@ -172,6 +175,25 @@ public class BookListActivity extends AppCompatActivity {
 
                 BookAdapter bookAdapter = new BookAdapter(books, BookListActivity.this, viewFavoriteBooks, switchCompatPanel, noBookText);
                 listView.setAdapter(bookAdapter);
+
+                if (!viewFavoriteBooks) {
+                    listView.post(() -> {
+                        int start = listView.getFirstVisiblePosition();
+                        dbManager = new DBManager(BookListActivity.this);
+                        Book book;
+
+                        for (int i = start, j = listView.getLastVisiblePosition(); i <= j; i++) {
+                            book = (Book) listView.getItemAtPosition(i);
+                            if (dbManager.checkFavoriteExist(book.getIsbn13())) {
+                                View view = listView.getChildAt(i - start);
+                                Button favoriteFeatureBtn = view.findViewById(R.id.favoriteFeatureBtn);
+                                favoriteFeatureBtn.setText("Already favorite".toUpperCase(Locale.ROOT));
+                                break;
+                            }
+                        }
+                    });
+                }
+
                 listView.setOnItemClickListener((adapterView, view, i, l) -> {
                     Book book = (Book) listView.getItemAtPosition(i);
                     Uri uri = Uri.parse(book.getBookURL());
