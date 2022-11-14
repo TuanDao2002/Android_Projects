@@ -9,5 +9,6 @@
     <color name="white">#FAFAFA</color>
     <color name="blue">#373e98</color>
     <color name="yellow">#E0BB20</color>
+    <color name="light_yellow">#FDFF00</color>
     <color name="red">#841818</color>
 </resources>

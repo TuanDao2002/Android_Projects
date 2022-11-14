@@ -5,8 +5,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +38,12 @@ public class SearchActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.back_arrow);
+            if (originalDrawable != null) {
+                Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                Drawable resizeDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 50, 50, true));
+                actionBar.setHomeAsUpIndicator(resizeDrawable);
+            }
         }
 
         keywordText = findViewById(R.id.keywordInput);

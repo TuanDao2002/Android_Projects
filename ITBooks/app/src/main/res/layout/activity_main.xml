@@ -23,18 +23,18 @@
         android:id="@+id/searchBook"
         style="@style/Button"
         android:stateListAnimator="@animator/button_shadow"
-        android:text="Search"/>
+        android:text="Search book"/>
 
     <Button
         android:id="@+id/newBook"
         style="@style/Button"
         android:stateListAnimator="@animator/button_shadow"
         android:layout_margin="25dp"
-        android:text="New" />
+        android:text="New books" />
 
     <Button
         android:id="@+id/favoriteBook"
         style="@style/Button"
         android:stateListAnimator="@animator/button_shadow"
-        android:text="Favorite" />
+        android:text="Favorite books" />
 </LinearLayout>

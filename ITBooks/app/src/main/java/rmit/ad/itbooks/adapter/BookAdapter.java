@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -88,9 +89,13 @@ public class BookAdapter extends ArrayAdapter<Book> {
                 DBManager dbManager = new DBManager(context);
                 if (dbManager.checkFavoriteExist(book.getIsbn13())) {
                     favoriteFeatureBtn.setText("Already favorite".toUpperCase(Locale.ROOT));
+                    favoriteFeatureBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_yellow));
+                    favoriteFeatureBtn.setEnabled(false);
                     alreadyExistInFavorite = true;
                 } else {
-                    favoriteFeatureBtn.setText(" + Add favorite book");
+                    favoriteFeatureBtn.setText("+ Add to favorite");
+                    favoriteFeatureBtn.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.yellow));
+                    favoriteFeatureBtn.setEnabled(true);
                 }
             }
 

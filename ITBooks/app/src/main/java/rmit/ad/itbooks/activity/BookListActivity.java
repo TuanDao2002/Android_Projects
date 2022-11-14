@@ -7,6 +7,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -58,6 +61,12 @@ public class BookListActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.back_arrow);
+            if (originalDrawable != null) {
+                Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
+                Drawable resizeDrawable = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 50, 50, true));
+                actionBar.setHomeAsUpIndicator(resizeDrawable);
+            }
         }
 
         noBookText = findViewById(R.id.noBookText);
@@ -184,11 +193,16 @@ public class BookListActivity extends AppCompatActivity {
 
                         for (int i = start, j = listView.getLastVisiblePosition(); i <= j; i++) {
                             book = (Book) listView.getItemAtPosition(i);
+                            View view = listView.getChildAt(i - start);
+                            Button favoriteFeatureBtn = view.findViewById(R.id.favoriteFeatureBtn);
                             if (dbManager.checkFavoriteExist(book.getIsbn13())) {
-                                View view = listView.getChildAt(i - start);
-                                Button favoriteFeatureBtn = view.findViewById(R.id.favoriteFeatureBtn);
                                 favoriteFeatureBtn.setText("Already favorite".toUpperCase(Locale.ROOT));
-                                break;
+                                favoriteFeatureBtn.setBackgroundTintList(ContextCompat.getColorStateList(BookListActivity.this, R.color.light_yellow));
+                                favoriteFeatureBtn.setEnabled(false);
+                            } else {
+                                favoriteFeatureBtn.setText("+ Add to favorite");
+                                favoriteFeatureBtn.setBackgroundTintList(ContextCompat.getColorStateList(BookListActivity.this, R.color.yellow));
+                                favoriteFeatureBtn.setEnabled(true);
                             }
                         }
                     });
