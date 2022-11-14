@@ -105,7 +105,12 @@ public class BookListActivity extends AppCompatActivity {
     }
 
     private void responseToSearchActivity(String errorMessage) {
-        Intent intent = new Intent(BookListActivity.this, SearchActivity.class);
+        Intent intent;
+        if (viewNewBooks) {
+            intent = new Intent(BookListActivity.this, MainActivity.class);
+        } else {
+            intent = new Intent(BookListActivity.this, SearchActivity.class);
+        }
         intent.putExtra("error", errorMessage);
         setResult(RESULT_OK, intent);
         finish();

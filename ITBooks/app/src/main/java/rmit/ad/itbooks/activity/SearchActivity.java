@@ -80,8 +80,8 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             if (!title.isEmpty()) {
-                ViewDialog viewDialog = new ViewDialog();
-                viewDialog.showDialog(SearchActivity.this, message);
+                ViewDialog viewDialog = new ViewDialog(SearchActivity.this, message);
+                viewDialog.showDialog();
                 return;
             }
 
@@ -112,8 +112,8 @@ public class SearchActivity extends AppCompatActivity {
                         message = "Please fix the keyword or try again";
                     }
 
-                    ViewDialog viewDialog = new ViewDialog();
-                    viewDialog.showDialog(SearchActivity.this, message);
+                    ViewDialog viewDialog = new ViewDialog(SearchActivity.this, message);
+                    viewDialog.showDialog();
                 }
             }
         }

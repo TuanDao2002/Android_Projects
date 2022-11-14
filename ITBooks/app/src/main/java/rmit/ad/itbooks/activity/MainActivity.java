@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import rmit.ad.itbooks.R;
+import rmit.ad.itbooks.util.ViewDialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +57,24 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(MainActivity.this,"back from new", Toast.LENGTH_SHORT).show();
+                String res;
+                if (data == null) return;
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    res = (String) bundle.get("error");
+
+                    String message;
+                    if (res.equals("Connection error")) {
+                        message = "Check your Internet connection and try again";
+                    } else if (res.equals("Bad request error")) {
+                        message = "There is error in request. Please try again";
+                    } else {
+                        message = "Please fix the keyword or try again";
+                    }
+
+                    ViewDialog viewDialog = new ViewDialog(MainActivity.this, message);
+                    viewDialog.showDialog();
+                }
             }
         }
 

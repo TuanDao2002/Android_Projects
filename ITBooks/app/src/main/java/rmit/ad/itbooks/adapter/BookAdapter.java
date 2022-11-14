@@ -1,5 +1,6 @@
 package rmit.ad.itbooks.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import java.util.Locale;
 import rmit.ad.itbooks.R;
 import rmit.ad.itbooks.db.DBManager;
 import rmit.ad.itbooks.model.Book;
+import rmit.ad.itbooks.util.ViewDialog;
 
 public class BookAdapter extends ArrayAdapter<Book> {
     private List<Book> bookList;
@@ -44,7 +46,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         this.noTextView = noTextView;
     }
 
-    private void changeSwitchCompatPanelVisibility() {
+    public void changeSwitchCompatPanelVisibility() {
         if (bookList.size() != 0)  {
             switchCompatPanel.setVisibility(View.VISIBLE);
         } else {
@@ -104,8 +106,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
                 DBManager dbManager = new DBManager(context);
 
                 if (viewFavoriteBooks) {
-                    dbManager.deleteFavoriteBook(book.getIsbn13());
-                    bookList.remove(book);
+                    ViewDialog viewDialog = new ViewDialog((Activity) context,
+                            "Do you want to delete this book from favorite ?");
+                    viewDialog.askToDeleteDialog(dbManager, this, bookList, book);
                 } else if (canInsertToFavorite) {
                     dbManager.insertFavoriteBook(book);
                 }
