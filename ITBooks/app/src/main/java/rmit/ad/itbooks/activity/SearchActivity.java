@@ -3,7 +3,6 @@ package rmit.ad.itbooks.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -24,6 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import rmit.ad.itbooks.R;
+import rmit.ad.itbooks.util.ViewDialog;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -80,11 +80,8 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             if (!title.isEmpty()) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                        .setTitle(title)
-                        .setMessage(message)
-                        .setPositiveButton("OK", (dialog, i) -> dialog.dismiss());
-                builder.create().show();
+                ViewDialog viewDialog = new ViewDialog();
+                viewDialog.showDialog(SearchActivity.this, message);
                 return;
             }
 
@@ -115,11 +112,8 @@ public class SearchActivity extends AppCompatActivity {
                         message = "Please fix the keyword or try again";
                     }
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle(res)
-                            .setMessage(message)
-                            .setPositiveButton("OK", (dialog, i) -> dialog.dismiss());
-                    builder.create().show();
+                    ViewDialog viewDialog = new ViewDialog();
+                    viewDialog.showDialog(SearchActivity.this, message);
                 }
             }
         }

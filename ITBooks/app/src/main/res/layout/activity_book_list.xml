@@ -50,6 +50,11 @@
                 app:trackTint="@drawable/switch_track"
                 android:text="Sort by price"
                 android:textSize="20sp"
+                android:textColor="@color/white"
+                android:shadowColor="@color/black"
+                android:shadowDx="5"
+                android:shadowDy="5"
+                android:shadowRadius="1"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />
         </LinearLayout>

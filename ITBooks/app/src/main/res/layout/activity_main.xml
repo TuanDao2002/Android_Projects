@@ -13,10 +13,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
         android:textAlignment="center"
-        android:fontFamily="sans-serif-black"
+        android:textSize="45sp"
         android:textColor="@color/yellow"
+        android:shadowColor="@color/black"
+        android:shadowDx="10"
+        android:shadowDy="10"
+        android:shadowRadius="5"
         android:text="IT Books" />
 
     <Button
