@@ -5,8 +5,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import rmit.ad.itbooks.R;
@@ -43,6 +49,16 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("favorite", true);
             startActivityForResult(intent, 400);
         });
+
+        ImageView logo = (ImageView) findViewById(R.id.logo);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 125, getResources().getDisplayMetrics());
+            logo.setLayoutParams(new LinearLayout.LayoutParams(width, height));
+        }
+
+        Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
+        logo.startAnimation(animZoomIn);
     }
 
     @Override

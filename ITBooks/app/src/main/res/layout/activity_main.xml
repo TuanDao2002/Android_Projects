@@ -10,11 +10,17 @@
     android:background="@color/red"
     tools:context=".activity.MainActivity">
 
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/itbooks"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="45sp"
+        android:textSize="30sp"
         android:textColor="@color/yellow"
         android:shadowColor="@color/black"
         android:shadowDx="10"
@@ -32,7 +38,7 @@
         android:id="@+id/newBook"
         style="@style/Button"
         android:stateListAnimator="@animator/button_shadow"
-        android:layout_margin="25dp"
+        android:layout_margin="15dp"
         android:text="New books" />
 
     <Button
