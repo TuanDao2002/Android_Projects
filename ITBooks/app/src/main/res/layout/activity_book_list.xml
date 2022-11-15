@@ -38,22 +38,43 @@
         <LinearLayout
             android:id="@+id/switchSortPanel"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="37.5dp"
             android:background="@color/yellow"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:visibility="invisible">
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:visibility="invisible"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchSort"
-                app:thumbTint="@drawable/switch_thumb"
-                app:trackTint="@drawable/switch_track"
-                android:text="Sort by price"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical"
+                    android:text="Sort by price"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchSort"
+                    android:layout_alignParentEnd="true"
+                    app:thumbTint="@drawable/switch_thumb"
+                    app:trackTint="@drawable/switch_track"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:gravity="end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
         </LinearLayout>
 
         <ListView
