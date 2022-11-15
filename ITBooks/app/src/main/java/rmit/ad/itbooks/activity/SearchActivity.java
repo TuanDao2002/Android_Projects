@@ -96,7 +96,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 200) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(SearchActivity.this,"back from book list", Toast.LENGTH_SHORT).show();
                 String res;
                 if (data == null) return;
                 Bundle bundle = data.getExtras();

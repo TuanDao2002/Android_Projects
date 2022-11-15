@@ -64,15 +64,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this,"back from search", Toast.LENGTH_SHORT).show();
-            }
-        }
-
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this,"back from new", Toast.LENGTH_SHORT).show();
                 String res;
                 if (data == null) return;
                 Bundle bundle = data.getExtras();
@@ -91,12 +84,6 @@ public class MainActivity extends AppCompatActivity {
                     ViewDialog viewDialog = new ViewDialog(MainActivity.this, message);
                     viewDialog.showDialog();
                 }
-            }
-        }
-
-        if (requestCode == 400) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this,"back from favorite", Toast.LENGTH_SHORT).show();
             }
         }
     }
