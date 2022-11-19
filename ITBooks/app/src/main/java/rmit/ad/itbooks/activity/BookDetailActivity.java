@@ -17,14 +17,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-
-import java.util.Date;
 
 public class BookDetailActivity extends AppCompatActivity {
 
@@ -49,16 +44,38 @@ public class BookDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String bookURL = intent.getExtras().getString("bookURL");
 
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.waitingForWebDetail);
+        ProgressBar progressBar = findViewById(R.id.waitingForWebDetail);
         WebView webView = findViewById(R.id.webContent);
 
-        webView.setWebChromeClient(new WebChromeClient() {
+        webView.setWebViewClient(new WebViewClient() {
+            boolean timeout = true;
             @Override
-            public void onProgressChanged(WebView view, int progress) {
-                if (progress == 100) {
-                    progressBar.setVisibility(View.GONE);
-                    webView.setVisibility(View.VISIBLE);
-                }
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                new Thread(() -> {
+                    timeout = true;
+
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(timeout) {
+                        Intent intent1 = new Intent(BookDetailActivity.this, BookListActivity.class);
+                        intent1.putExtra("error", "Connection error");
+                        setResult(RESULT_OK, intent1);
+                        finish();
+                    }
+                }).start();
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                timeout = false;
+                progressBar.setVisibility(View.GONE);
+                webView.setVisibility(View.VISIBLE);
             }
         });
 

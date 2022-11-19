@@ -117,6 +117,10 @@ public class BookListActivity extends AppCompatActivity {
                 listView.setAdapter(newBookAdapter);
             }
         });
+
+        if (!viewFavoriteBooks && !HttpHandler.isNetworkConnected(BookListActivity.this)) {
+            responseToSearchActivity("Connection error");
+        }
     }
 
     private void responseToSearchActivity(String errorMessage) {
