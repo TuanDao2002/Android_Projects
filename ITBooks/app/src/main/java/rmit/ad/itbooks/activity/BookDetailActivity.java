@@ -12,23 +12,31 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
-import android.widget.Toast;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
-public class BookContentActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class BookDetailActivity extends AppCompatActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_content);
+        setContentView(R.layout.activity_book_detail);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("Book content");
+            actionBar.setTitle("Book detail");
             actionBar.setDisplayHomeAsUpEnabled(true);
             Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.back_arrow);
             if (originalDrawable != null) {
@@ -39,18 +47,35 @@ public class BookContentActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        String url = intent.getExtras().getString("bookURL");
-        Toast.makeText(BookContentActivity.this, url, Toast.LENGTH_SHORT).show();
+        String bookURL = intent.getExtras().getString("bookURL");
 
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.waitingForWebDetail);
         WebView webView = findViewById(R.id.webContent);
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if (progress == 100) {
+                    progressBar.setVisibility(View.GONE);
+                    webView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        });
+
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(url);
+        webView.loadUrl(bookURL);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(BookContentActivity.this, MainActivity.class);
+            Intent intent = new Intent(BookDetailActivity.this, MainActivity.class);
             setResult(RESULT_OK, intent);
             finish();
             return true;

@@ -86,7 +86,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
             Button favoriteFeatureBtn = convertView.findViewById(R.id.favoriteFeatureBtn);
             boolean alreadyExistInFavorite = false;
             if (viewFavoriteBooks) {
-                favoriteFeatureBtn.setText("- Remove favorite book");
+                favoriteFeatureBtn.setText("- Remove favorite");
             } else {
                 DBManager dbManager = new DBManager(context);
                 if (dbManager.checkFavoriteExist(book.getIsbn13())) {

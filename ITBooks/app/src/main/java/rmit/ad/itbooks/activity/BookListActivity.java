@@ -1,6 +1,7 @@
 package rmit.ad.itbooks.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -10,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -36,6 +36,7 @@ import rmit.ad.itbooks.model.Book;
 import rmit.ad.itbooks.adapter.BookAdapter;
 import rmit.ad.itbooks.http.HttpHandler;
 import rmit.ad.itbooks.R;
+import rmit.ad.itbooks.util.ViewDialog;
 
 public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
@@ -227,7 +228,7 @@ public class BookListActivity extends AppCompatActivity {
 
                 listView.setOnItemClickListener((adapterView, view, i, l) -> {
                     Book book = (Book) listView.getItemAtPosition(i);
-                    Intent intent = new Intent(BookListActivity.this, BookContentActivity.class);
+                    Intent intent = new Intent(BookListActivity.this, BookDetailActivity.class);
                     intent.putExtra("bookURL", book.getBookURL());
                     startActivityForResult(intent, 500);
                 });
@@ -236,6 +237,29 @@ public class BookListActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 responseToSearchActivity("Bad request error");
                 e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 500) {
+            if (resultCode == RESULT_OK) {
+                String res;
+                if (data == null) return;
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    res = (String) bundle.get("error");
+
+                    String message = "";
+                    if (res.equals("Connection error")) {
+                        message = "Check your Internet connection and try again";
+                    }
+
+                    ViewDialog viewDialog = new ViewDialog(BookListActivity.this, message);
+                    viewDialog.showDialog();
+                }
             }
         }
     }
