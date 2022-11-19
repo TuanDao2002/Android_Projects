@@ -55,12 +55,26 @@ public class BookListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
+        Intent intent = getIntent();
+        if (intent.getExtras().getBoolean("new")) {
+            viewNewBooks = true;
+        } else if (intent.getExtras().getBoolean("favorite")) {
+            viewFavoriteBooks = true;
+        }
+
         listView = findViewById(R.id.bookList);
         new GetBooks().execute();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            if (viewNewBooks) {
+                actionBar.setTitle("New books");
+            } else if (viewFavoriteBooks) {
+                actionBar.setTitle("Favorite books");
+            } else {
+                actionBar.setTitle("Matched books");
+            }
             Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.back_arrow);
             if (originalDrawable != null) {
                 Bitmap bitmap = ((BitmapDrawable) originalDrawable).getBitmap();
@@ -122,11 +136,9 @@ public class BookListActivity extends AppCompatActivity {
             Intent intent = getIntent();
 
             String url;
-            if (intent.getExtras().getBoolean("new")) {
+            if (viewNewBooks) {
                 url = "https://api.itbook.store/1.0/new";
-                viewNewBooks = true;
-            } else if (intent.getExtras().getBoolean("favorite")) {
-                viewFavoriteBooks = true;
+            } else if (viewFavoriteBooks) {
                 dbManager = new DBManager(BookListActivity.this);
                 books = dbManager.fetchFavoriteBooks();
                 return null;
@@ -215,9 +227,9 @@ public class BookListActivity extends AppCompatActivity {
 
                 listView.setOnItemClickListener((adapterView, view, i, l) -> {
                     Book book = (Book) listView.getItemAtPosition(i);
-                    Uri uri = Uri.parse(book.getBookURL());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    Intent intent = new Intent(BookListActivity.this, BookContentActivity.class);
+                    intent.putExtra("bookURL", book.getBookURL());
+                    startActivityForResult(intent, 500);
                 });
 
                 waitingProgressBar.setVisibility(View.GONE);

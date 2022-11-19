@@ -37,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setTitle("Search book");
             actionBar.setDisplayHomeAsUpEnabled(true);
             Drawable originalDrawable = ContextCompat.getDrawable(this, R.drawable.back_arrow);
             if (originalDrawable != null) {
