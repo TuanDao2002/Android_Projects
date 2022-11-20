@@ -22,6 +22,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 public class BookDetailActivity extends AppCompatActivity {
+    private boolean timeout = true;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -48,20 +49,17 @@ public class BookDetailActivity extends AppCompatActivity {
         WebView webView = findViewById(R.id.webContent);
 
         webView.setWebViewClient(new WebViewClient() {
-            boolean timeout = true;
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 new Thread(() -> {
-                    timeout = true;
-
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
-                    if(timeout) {
+                    if (timeout) {
                         Intent intent1 = new Intent(BookDetailActivity.this, BookListActivity.class);
                         intent1.putExtra("error", "Connection error");
                         setResult(RESULT_OK, intent1);

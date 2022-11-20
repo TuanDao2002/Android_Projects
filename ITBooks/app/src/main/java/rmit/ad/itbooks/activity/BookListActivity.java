@@ -258,7 +258,7 @@ public class BookListActivity extends AppCompatActivity {
 
                     String message = "";
                     if (res.equals("Connection error")) {
-                        message = "Check your Internet connection and try again";
+                        message = "The web view took too long to respond. Check your Internet connection and try again";
                     }
 
                     ViewDialog viewDialog = new ViewDialog(BookListActivity.this, message);
