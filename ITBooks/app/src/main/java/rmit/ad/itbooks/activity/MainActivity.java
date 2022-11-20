@@ -13,11 +13,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import rmit.ad.itbooks.R;
 import rmit.ad.itbooks.util.ViewDialog;
 
+// Main activity to redirect to other activities
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -30,12 +30,14 @@ public class MainActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        // button redirects to SearchActivity
         Button searchBook = findViewById(R.id.searchBook);
         searchBook.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivityForResult(intent, 100);
         });
 
+        // button redirects to BookListActivity to view new books
         Button viewNewBook = findViewById(R.id.newBook);
         viewNewBook.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, BookListActivity.class);
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 300);
         });
 
+        // button redirects to BookListActivity to view favorite books
         Button viewFavoriteBook = findViewById(R.id.favoriteBook);
         viewFavoriteBook.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, BookListActivity.class);
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 400);
         });
 
+        // Set responsive for app logo
         ImageView logo = (ImageView) findViewById(R.id.logo);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 200, getResources().getDisplayMetrics());
@@ -57,10 +61,12 @@ public class MainActivity extends AppCompatActivity {
             logo.setLayoutParams(new LinearLayout.LayoutParams(width, height));
         }
 
+        // create animation for app logo
         Animation animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         logo.startAnimation(animZoomIn);
     }
 
+    // display dialog when app has some issues
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

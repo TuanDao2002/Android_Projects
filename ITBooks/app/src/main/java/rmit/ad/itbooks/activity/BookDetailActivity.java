@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
+// Activity to view the detail of a book in a website embedded in this app
 public class BookDetailActivity extends AppCompatActivity {
     private boolean timeout = true;
 
@@ -48,6 +49,7 @@ public class BookDetailActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.waitingForWebDetail);
         WebView webView = findViewById(R.id.webContent);
 
+        // response error to previous activity if the website took too long to render
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -77,6 +79,7 @@ public class BookDetailActivity extends AppCompatActivity {
             }
         });
 
+        // allow the website to download book from Internet to user's device
         webView.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));

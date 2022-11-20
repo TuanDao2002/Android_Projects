@@ -38,6 +38,7 @@ import rmit.ad.itbooks.http.HttpHandler;
 import rmit.ad.itbooks.R;
 import rmit.ad.itbooks.util.ViewDialog;
 
+// Activity to display list of books users wanted to view
 public class BookListActivity extends AppCompatActivity {
     String keywordValue = "";
     private String json = "";
@@ -87,6 +88,8 @@ public class BookListActivity extends AppCompatActivity {
         noBookText = findViewById(R.id.noBookText);
         switchCompatPanel = findViewById(R.id.switchSortPanel);
         switchCompat = findViewById(R.id.switchSort);
+
+        // switch enables user to sort the books by price ascending
         switchCompat.setOnCheckedChangeListener((compoundButton, b) -> {
             BookAdapter newBookAdapter;
             if (switchCompat.isChecked()) {
@@ -118,6 +121,7 @@ public class BookListActivity extends AppCompatActivity {
             }
         });
 
+        // redirect to previous activity if there is Internet connection error
         if (!viewFavoriteBooks && !HttpHandler.isNetworkConnected(BookListActivity.this)) {
             responseToSearchActivity("Connection error");
         }
@@ -135,6 +139,7 @@ public class BookListActivity extends AppCompatActivity {
         finish();
     }
 
+    // fetch API data or SQLite based on request from previous activity
     private class GetBooks extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
@@ -161,6 +166,7 @@ public class BookListActivity extends AppCompatActivity {
             return null;
         }
 
+        // render the data and display them in ListView
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
@@ -245,6 +251,7 @@ public class BookListActivity extends AppCompatActivity {
         }
     }
 
+    // check if there are issues when users clicked to view the detail website of a book
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

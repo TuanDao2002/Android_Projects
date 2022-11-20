@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +24,7 @@ import java.util.regex.Pattern;
 import rmit.ad.itbooks.R;
 import rmit.ad.itbooks.util.ViewDialog;
 
+// Search activity to enter a keyword and search matched books
 public class SearchActivity extends AppCompatActivity {
 
     EditText keywordText;
@@ -47,6 +47,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         }
 
+        // listen to keyword user is entering
         keywordText = findViewById(R.id.keywordInput);
         keywordText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -65,6 +66,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // button to validate keyword and redirect to BookListActivity if it is valid
         Button findBooksBtn = findViewById(R.id.findBooks);
         findBooksBtn.setOnClickListener(view -> {
             keyword = keyword.trim();
@@ -92,6 +94,7 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
+    // check if there is some issues when data is not fetched in BookListActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
